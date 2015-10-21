@@ -2,7 +2,7 @@ import org.scalatest.BeforeAndAfterEach
 import org.scalatest.Matchers
 import org.scalatest.WordSpec
 
-class ShoppingCartTest extends WordSpec with Matchers with BeforeAndAfterEach {
+class ShoppingCartTest extends WordSpec with Matchers {
 
 	val shoppingCart = new ShoppingCart
 

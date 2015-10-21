@@ -29,15 +29,23 @@ class ShoppingCart {
 
 	def run = {
 		val list = List(Apple(), Apple(), Orange(), Apple())
-
 		println(calculateCost(list))
 	}
 
+	/**
+	 * Step 1 answer - calculates cost without discount
+	 */
 	def calculateCost(itemList: List[StoreItem]): BigDecimal = {
 		itemList.map(_.cost).sum
 	}
 
+	/**
+	 * Step 2 answer - calculates cost with discount
+	 */
 	def calculateDiscountCost(itemList: List[StoreItem]): BigDecimal = {
+		/**
+		 * We assume here that all items in the list are from the same class.
+		 */
 		def costPerStoreItem(items: List[StoreItem]): BigDecimal = {
 			if (items.size == 0) 0
 			else {
