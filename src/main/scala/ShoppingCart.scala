@@ -1,5 +1,4 @@
 
-
 abstract class StoreItem {
 	val cost: BigDecimal
 	val dealGet: Int
@@ -18,26 +17,12 @@ case class Orange() extends StoreItem {
 	override val dealPayFor = 2
 }
 
-object ShoppingCart {
-	def main(args: Array[String]): Unit = {
-		val shoppingCart = new ShoppingCart
-		shoppingCart.run
-	}
-}
-
 class ShoppingCart {
-
-	def run = {
-		val list = List(Apple(), Apple(), Orange(), Apple())
-		println(calculateCost(list))
-	}
 
 	/**
 	 * Step 1 answer - calculates cost without discount
 	 */
-	def calculateCost(itemList: List[StoreItem]): BigDecimal = {
-		itemList.map(_.cost).sum
-	}
+	def calculateCost(itemList: List[StoreItem]): BigDecimal = itemList.map(_.cost).sum
 
 	/**
 	 * Step 2 answer - calculates cost with discount
@@ -47,13 +32,13 @@ class ShoppingCart {
 		 * We assume here that all items in the list are from the same class.
 		 */
 		def costPerStoreItem(items: List[StoreItem]): BigDecimal = {
-			if (items.size == 0) 0
+			if (items.isEmpty) 0
 			else {
 				//Remainder outside of deal
-				val remainder = items.size % items(0).dealGet
+				val remainder = items.size % items.head.dealGet
 				// Number of items needed to be bought for the max deals (excluding the remainder)
-				val noNeededToBuy = (items.size - remainder) * items(0).dealPayFor / items(0).dealGet
-				items(0).cost * (noNeededToBuy + remainder)
+				val noNeededToBuy = (items.size - remainder) * items.head.dealPayFor / items.head.dealGet
+				items.head.cost * (noNeededToBuy + remainder)
 			}
 		}
 
