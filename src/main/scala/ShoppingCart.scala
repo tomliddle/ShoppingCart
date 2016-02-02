@@ -1,48 +1,37 @@
 
-abstract class StoreItem {
-	val cost: BigDecimal
-	val dealGet: Int
-	val dealPayFor: Int
-}
-
-case class Apple() extends StoreItem {
-	override val cost: BigDecimal = 0.6
-	override val dealGet = 2
-	override val dealPayFor = 1
-}
-
-case class Orange() extends StoreItem {
-	override val cost: BigDecimal = 0.25
-	override val dealGet = 3
-	override val dealPayFor = 2
-}
-
 class ShoppingCart {
 
 	/**
 	 * Step 1 answer - calculates cost without discount
 	 */
-	def calculateCost(itemList: List[StoreItem]): BigDecimal = itemList.map(_.cost).sum
+	def calculateCost(itemList: List[String]): BigDecimal = {
+		itemList.foldLeft(BigDecimal(0)) {
+			(acc, curr) => acc + (curr match {
+				case "Apple" => 0.6
+				case "Orange" => 0.25
+				case _ => 0
+			})
+		}
+	}
 
 	/**
 	 * Step 2 answer - calculates cost with discount
 	 */
-	def calculateDiscountCost(itemList: List[StoreItem]): BigDecimal = {
+	def calculateDiscountCost(itemList: List[String]): BigDecimal = {
 		/**
 		 * We assume here that all items in the list are from the same class.
 		 */
-		def costPerStoreItem(items: List[StoreItem]): BigDecimal = {
-			if (items.isEmpty) 0
-			else {
-				//Remainder outside of deal
-				val remainder = items.size % items.head.dealGet
-				// Number of items needed to be bought for the max deals (excluding the remainder)
-				val noNeededToBuy = (items.size - remainder) * items.head.dealPayFor / items.head.dealGet
-				items.head.cost * (noNeededToBuy + remainder)
-			}
+		def costPerStoreItem(size: Int, get: Int, payFor: Int): BigDecimal = {
+			(size / get) * payFor + size % get
 		}
 
-		itemList.groupBy(identity).map{x => costPerStoreItem(x._2)}.sum
+		itemList.groupBy(x => x).foldLeft(BigDecimal(0)) {
+			(acc, curr) => acc + (curr._1 match {
+				case "Apple" => costPerStoreItem(curr._2.length, 2, 1) * 0.6
+				case "Orange" => costPerStoreItem(curr._2.length, 3, 2) * 0.25
+				case _ => BigDecimal(0)
+			})
+		}
 	}
 
 }
