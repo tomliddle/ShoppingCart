@@ -21,15 +21,15 @@ class ShoppingCart {
 		/**
 		 * We assume here that all items in the list are from the same class.
 		 */
-		def costPerStoreItem(size: Int, get: Int, payFor: Int): BigDecimal = {
+		def itemsToBePurchased(size: Int, get: Int, payFor: Int): Int = {
 			(size / get) * payFor + size % get
 		}
 
 		itemList.groupBy(x => x).foldLeft(BigDecimal(0)) {
 			(acc, curr) => acc + (curr._1 match {
-				case "Apple" => costPerStoreItem(curr._2.length, 2, 1) * 0.6
-				case "Orange" => costPerStoreItem(curr._2.length, 3, 2) * 0.25
-				case _ => BigDecimal(0)
+				case "Apple" => itemsToBePurchased(curr._2.length, 2, 1) * 0.6
+				case "Orange" => itemsToBePurchased(curr._2.length, 3, 2) * 0.25
+				case _ => 0
 			})
 		}
 	}
